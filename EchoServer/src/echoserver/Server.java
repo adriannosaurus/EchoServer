@@ -9,6 +9,7 @@ public class Server
     public static void main(String[] args)
     {
         System.out.println("THE SERVER\n");
+        
         //Set up server
         Socket cSocket = null;
         try (ServerSocket sSocket = new ServerSocket(6000))
@@ -23,7 +24,7 @@ public class Server
         }
         
         //Read message
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(Client.getInputStream()));
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
                 PrintWriter out = new PrintWriter(cSocket.getOutputStream(), true))
         {
             String inputLine;
@@ -32,7 +33,9 @@ public class Server
                 System.out.println("Server: " + inputLine);
                 out.println(inputLine);
             }
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             System.out.println("Server message failed");
         }
     }

@@ -11,6 +11,7 @@ public class Client
     public static void main(String[] args)
     {
         System.out.println("THE CLIENT\n");
+        
         try
         {
             System.out.print("Client connecting... ");
@@ -31,20 +32,23 @@ public class Client
         {
             System.out.println("Failed");
         }
+        
+        //Send message
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
+                PrintWriter out = new PrintWriter(cSocket.getOutputStream(), true))
+        {
+            String inputLine;
+            while ((inputLine = br.readLine()) != null)
+            {
+                System.out.println("Server: " + inputLine);
+                out.println(inputLine);
+            }
+        }
+        catch (IOException ex)
+        {
+            System.out.println("Server message failed");
+        }
     }
-
-    static InputStream getInputStream() {
-        
-//        String InputStream;
-//        
-//        while ((InputStream = stdIn.readLine()) !=null) {
-//            System.out.println("Server: " + in.readLine());
-//        }
-
-//This is what I got from the text book, I wasn't really sure if they needed the import or something
-        
-        throw new UnsupportedOperationException("getInputStream() not supported yet.");
-}
         
 }
 
