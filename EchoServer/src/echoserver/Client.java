@@ -1,10 +1,8 @@
 package echoserver;
 
 import java.io.*;
-//import static java.lang.System.in;
 import java.net.*;
 import java.util.*;
-import static sun.nio.ch.Net.localAddress;
 
 public class Client
 {
@@ -21,34 +19,29 @@ public class Client
                     PrintWriter out = new PrintWriter(cSocket.getOutputStream(), true);
                     BufferedReader br = new BufferedReader(new InputStreamReader(cSocket.getInputStream())))
             {
-                System.out.println("Success");
-            }
-            catch (IOException e)
-            {
-                System.out.println("Client setup failed");
+                System.out.println("Success\n");
+                Scanner scnr = new Scanner(System.in);
+                while (true)
+                {
+                    System.out.print("Enter a message (\"Q\" to quit): ");
+                    String inputLine = scnr.nextLine();
+                    if (inputLine.equalsIgnoreCase("q"))
+                    {
+                        break;
+                    }
+                    out.println(inputLine);
+                    String response = br.readLine();
+                    System.out.println("   Server response: " + response);
+                }
             }
         }
         catch (IOException e)
         {
-            System.out.println("Failed");
+            e.printStackTrace();
         }
         
-        //Send message
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(cSocket.getOutputStream(), true))
-        {
-            String inputLine;
-            while ((inputLine = br.readLine()) != null)
-            {
-                System.out.println("Server: " + inputLine);
-                out.println(inputLine);
-            }
-        }
-        catch (IOException ex)
-        {
-            System.out.println("Server message failed");
-        }
+        System.out.println("\nGoodbye");
+        
     }
         
 }
-

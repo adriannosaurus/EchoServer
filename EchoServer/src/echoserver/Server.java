@@ -11,33 +11,30 @@ public class Server
         System.out.println("THE SERVER\n");
         
         //Set up server
-        Socket cSocket = null;
         try (ServerSocket sSocket = new ServerSocket(6000))
         {
             System.out.print("Server connecting... ");
-            cSocket = sSocket.accept();
-            System.out.println("Success");
+            Socket cSocket = sSocket.accept();
+            System.out.println("Success\n");
+            
+            //Read message
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
+                    PrintWriter out = new PrintWriter(cSocket.getOutputStream(), true))
+            {
+                String inputLine;
+                while ((inputLine = br.readLine()) != null)
+                {
+                    System.out.println("Message from client: " + inputLine);
+                    out.println(inputLine);
+                }
+            }
         }
         catch (IOException e)
         {
-            System.out.println("Failure");
+            e.printStackTrace();
         }
         
-        //Read message
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(cSocket.getInputStream()));
-                PrintWriter out = new PrintWriter(cSocket.getOutputStream(), true))
-        {
-            String inputLine;
-            while ((inputLine = br.readLine()) != null)
-            {
-                System.out.println("Server: " + inputLine);
-                out.println(inputLine);
-            }
-        }
-        catch (IOException ex)
-        {
-            System.out.println("Server message failed");
-        }
+        System.out.println("\nGoodbye");
     }
 
 }
